@@ -1,12 +1,17 @@
-FROM microsoft/aspnetcore-build:2.0 
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS builder
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
+COPY . .
+
+WORKDIR /src
+
 RUN dotnet restore
 
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
+RUN dotnet publish aspnetapp/aspnetapp.csproj -c Release -o /app
 
-ENTRYPOINT ["dotnet", "out/aspnetapp.dll"]
+RUN dotnet test --logger "trx;LogFileName=./aspnetapp.trx"
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2
+
+COPY --from=builder /app .
+
+ENTRYPOINT ["dotnet", "aspnetapp.dll"]
