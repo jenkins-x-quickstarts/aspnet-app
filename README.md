@@ -77,10 +77,10 @@ C:\git\dotnet-docker-samples\aspnetapp>docker inspect -f "{{ .NetworkSettings.Ne
 
 ## Build and run the sample locally
 
-You can build and run the sample locally with the [.NET Core 2.0 SDK](https://www.microsoft.com/net/download/core) using the following commands. The commands assume that you are in the root of the repository.
+You can build and run the sample locally with the [.NET Core 2.2 SDK](https://www.microsoft.com/net/download/core) using the following commands. The commands assume that you are in the root of the repository.
 
 ```console
-cd aspnetapp
+cd src/aspnetapp
 dotnet run
 ```
 
@@ -110,8 +110,8 @@ Note: The `-c release` argument builds the application in release mode (the defa
 
 The following Docker images are used in this sample
 
-* [microsoft/aspnetcore-build:2.0](https://hub.docker.com/r/microsoft/aspnetcore-build)
-* [microsoft/aspnetcore:2.0](https://hub.docker.com/r/microsoft/aspnetcore/)
+* [mcr.microsoft.com/dotnet/core/sdk:2.2](https://hub.docker.com/_/microsoft-dotnet-core-sdk/)
+* [mcr.microsoft.com/dotnet/core/aspnet:2.2](https://hub.docker.com/_/microsoft-dotnet-core-aspnet/)
 
 ## Related Resources
 
