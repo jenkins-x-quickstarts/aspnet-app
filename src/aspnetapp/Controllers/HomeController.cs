@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using aspnetapp.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace aspnetapp.Controllers
 {
@@ -6,6 +7,7 @@ namespace aspnetapp.Controllers
     {
         public IActionResult Index()
         {
+            MetricsManager.HomeControllerHit.Inc();
             return View();
         }
 
