@@ -110,8 +110,8 @@ Note: The `-c release` argument builds the application in release mode (the defa
 
 The following Docker images are used in this sample
 
-* [mcr.microsoft.com/dotnet/sdk:3.1](https://hub.docker.com/_/microsoft-dotnet-sdk/)
-* [mcr.microsoft.com/dotnet/aspnet:3.1](https://hub.docker.com/_/microsoft-dotnet-aspnet/)
+* [mcr.microsoft.com/dotnet/sdk:6.0-alpine](https://hub.docker.com/_/microsoft-dotnet-sdk/)
+* [mcr.microsoft.com/dotnet/aspnet:6.0-alpine](https://hub.docker.com/_/microsoft-dotnet-aspnet/)
 
 ## Related Resources
 
