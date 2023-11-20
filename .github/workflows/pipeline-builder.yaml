@@ -55,6 +55,7 @@ jobs:
 
     - name: Generate Coverage Summary Report # convert Cobertura coverage to markdown report
       uses: irongut/CodeCoverageSummary@v1.3.0
+      if: always()
       with:
         filename: coverage.xml
         badge: true
@@ -69,10 +70,12 @@ jobs:
 
       # required to add a comment to PR with coverage
     - uses: jwalton/gh-find-current-pr@v1 
+      if: always()
       id: finder
 
     - name: Add Coverage PR Comment # add comment with coverage report
       uses: marocchino/sticky-pull-request-comment@v2
+      if: always()
       with:
         number: ${{ steps.finder.outputs.pr }}
         recreate: true
@@ -86,17 +89,4 @@ jobs:
 
     - name: Perform Security Analysis with dotnet
       run: dotnet build /p:Configuration=Release /p:RunAnalyzersDuringBuild=true
-      
-    - uses: jwalton/gh-find-current-pr@v1
-      id: find_pr
-      
-    - name: Add Code Coverage Comment to PR
-      if: steps.find_pr.outputs.number
-      uses: marocchino/sticky-pull-request-comment@v2
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        header: Code Coverage Report
-        message: |
-          ## Code Coverage Report
-          ![Coverage Badge](./coverage-badge.svg)
-          [Full report](./coverage-report.html)
+         
