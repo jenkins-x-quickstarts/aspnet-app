@@ -45,24 +45,24 @@ jobs:
 
     # Assuming tests generate a `TestResults.xml` file    
     - name: Publish Test Results # publish test result report as a comment to PR
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        if: always()
-        with:
-          files: |
-              ./results/test-results.xml
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: |
+            ./results/test-results.xml
 
     - name: Generate Coverage Summary Report # convert Cobertura coverage to markdown report
-        uses: irongut/CodeCoverageSummary@v1.3.0
-        with:
-          filename: coverage.xml
-          badge: true
-          fail_below_min: true
-          format: markdown
-          hide_branch_rate: false
-          hide_complexity: true
-          indicators: true
-          output: both
-          thresholds: "60 80"
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      with:
+        filename: coverage.xml
+        badge: true
+        fail_below_min: true
+        format: markdown
+        hide_branch_rate: false
+        hide_complexity: true
+        indicators: true
+        output: both
+        thresholds: "60 80"
 
       - uses: jwalton/gh-find-current-pr@v1 # required to add a comment to PR with coverage
         id: finder
