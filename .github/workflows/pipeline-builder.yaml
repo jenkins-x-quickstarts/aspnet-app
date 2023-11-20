@@ -38,8 +38,12 @@ jobs:
     - name: Test #installs junit logger to generate junit test report            
       run:  |          
           dotnet test --no-build --verbosity normal --logger "trx;logfilename=${{ runner.temp }}/testResults.trx" --collect:"XPlat Code Coverage" 
-          dotnet tool install -g trx2junit 
+          
+    - name: Convert Test Results
+      run: |
+          dotnet tool install -g trx2junit  
           trx2junit ${{ runner.temp }}/testResults.trx --output ./results
+
           
 
     # Assuming tests generate a `TestResults.xml` file    
