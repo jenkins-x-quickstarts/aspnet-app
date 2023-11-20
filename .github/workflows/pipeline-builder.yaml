@@ -39,6 +39,7 @@ jobs:
       run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;logfilename=${{ runner.temp }}/testResults.trx" --logger "console" --collect:"XPlat Code Coverage" 
           
     - name: Convert Test Results
+      if: always()
       run: |
           dotnet tool install -g trx2junit  
           trx2junit ${{ runner.temp }}/testResults.trx --output ./results
