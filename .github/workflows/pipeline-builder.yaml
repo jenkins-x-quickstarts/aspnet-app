@@ -37,7 +37,7 @@ jobs:
 
     - name: Test #installs junit logger to generate junit test report            
       run:  |          
-          dotnet test --no-build --verbosity normal --logger "trx;logfilename=${{ runner.temp }}/testResults.trx" --collect:"XPlat Code Coverage" 
+          dotnet test --no-build --verbosity normal --logger "trx;logfilename=${{ runner.temp }}/testResults.trx" --logger "console" --collect:"XPlat Code Coverage" 
           
     - name: Convert Test Results
       run: |
