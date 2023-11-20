@@ -48,9 +48,8 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: |
-            ./results/test-results.xml
-
+        files:  ./results/test-results.xml
+        
     - name: Generate Coverage Summary Report # convert Cobertura coverage to markdown report
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
@@ -73,8 +72,6 @@ jobs:
           number: ${{ steps.finder.outputs.pr }}
           recreate: true
           path: code-coverage-results.md
-
-
         
     - name: Install .NET Format (Lint)
       run: dotnet tool install -g dotnet-format
