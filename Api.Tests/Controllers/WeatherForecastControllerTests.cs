@@ -13,12 +13,6 @@ namespace Api.Controllers.Tests
     [TestClass()]
     public class WeatherForecastControllerTests
     {
-        [TestMethod()]
-        public void FailedTest()
-        {
-            Assert.Fail();
-        }
-
         private WeatherForecastController _controller;
 
 
