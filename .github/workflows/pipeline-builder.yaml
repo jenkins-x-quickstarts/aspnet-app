@@ -78,14 +78,10 @@ jobs:
       with:
         number: ${{ steps.finder.outputs.pr }}
         recreate: true
-        path: code-coverage-results.md
-        
-    - name: Install .NET Format (Lint)
-      run: dotnet tool install -g dotnet-format
+        path: code-coverage-results.md      
 
-    - name: Lint with dotnet-format
-      run: dotnet format --check
-
-    - name: Perform Security Analysis with dotnet
-      run: dotnet build /p:Configuration=Release /p:RunAnalyzersDuringBuild=true
-         
+    - name: Run .NET Code Analysis
+      uses: dotnet/code-analysis@v1
+      id: code-analysis
+      with:
+        build-breaking: true

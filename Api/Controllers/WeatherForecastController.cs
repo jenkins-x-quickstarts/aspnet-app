@@ -29,5 +29,13 @@ namespace Api.Controllers
             })
             .ToArray();
         }
+
+            private void foo() {
+        try {
+        var d = DateTime.Now;
+        }catch{                        
+        }
     }
+    }
+        
 }
