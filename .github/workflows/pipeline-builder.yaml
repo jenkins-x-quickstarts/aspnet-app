@@ -1,0 +1,91 @@
+name: .NET CI
+
+on: 
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Cache NuGet Packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Restore Dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore    
+
+    - name: Test #installs junit logger to generate junit test report            
+      run: dotnet test --no-build --configuration Release --verbosity normal --logger "trx;logfilename=${{ runner.temp }}/testResults.trx" --logger "console" --collect:"XPlat Code Coverage" 
+          
+    - name: Convert Test Results
+      if: always()
+      run: |
+          dotnet tool install -g trx2junit  
+          trx2junit ${{ runner.temp }}/testResults.trx --output ./results
+
+        
+    # Assuming tests generate a `TestResults.xml` file    
+    - name: Publish Test Results # publish test result report as a comment to PR
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files:  ./results/testResults.xml
+
+    - name: Generate Coverage Summary Report # convert Cobertura coverage to markdown report
+      uses: irongut/CodeCoverageSummary@v1.3.0
+      if: always()
+      with:
+        filename: '**/coverage.cobertura.xml'
+        badge: true
+        fail_below_min: true
+        format: markdown
+        hide_branch_rate: false
+        hide_complexity: true
+        indicators: true
+        output: both
+        thresholds: "50 80"
+
+
+      # required to add a comment to PR with coverage
+    - uses: jwalton/gh-find-current-pr@v1 
+      if: always()
+      id: finder
+
+    - name: Add Coverage PR Comment # add comment with coverage report
+      uses: marocchino/sticky-pull-request-comment@v2
+      if: always()
+      with:
+        number: ${{ steps.finder.outputs.pr }}
+        recreate: true
+        path: code-coverage-results.md
+        
+    - name: Install .NET Format (Lint)
+      run: dotnet tool install -g dotnet-format
+
+    - name: Lint with dotnet-format
+      run: dotnet format --check
+
+    - name: Perform Security Analysis with dotnet
+      run: dotnet build /p:Configuration=Release /p:RunAnalyzersDuringBuild=true
+         
